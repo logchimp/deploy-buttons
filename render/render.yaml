@@ -1,0 +1,29 @@
+services:
+  # Node web service
+  - type: web
+    name: logchimp-api
+    env: node
+    repo: https://github.com/logchimp/logchimp.git
+    numInstances: 1
+    buildCommand: yarn install
+    startCommand: yarn start
+    autoDeploy: false
+
+  # A static site
+  - type: web
+    name: logchimp-client
+    env: static
+    buildCommand: yarn build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    routes:
+      - type: redirect
+        source: /api/*
+        destination: ""
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: logchimp-database
+    ipAllowList: []
