@@ -13,6 +13,7 @@ services:
   - type: web
     name: logchimp-client
     env: static
+    repo: https://github.com/logchimp/theme.git
     buildCommand: yarn build
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: false
