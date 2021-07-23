@@ -1,13 +1,7 @@
-# Deploy button's
+# Deploy buttons 🚀
 
-This is a mono-repo with one click deploy button for deploying LogChimp.
+A collection of one-click buttons and scripts for deploying [LogChimp](https://logchimp.codecarrot.net) to various cloud hosting platforms. You can look for [alternatives](https://logchimp.codecarrot.net/docs/install) ways to deploy LogChimp.
 
-## Table of Content
-
-* [Render](#render)
-
-### Render
-
-`render.yaml` contains the configuration (IAC) for deployment.
-
-Read full guide on [How to deploy LogChimp on Render?](https://logchimp.codecarrot.net/docs/install/render)
+| | Name | Type | Lowest-price plan | Deploy |
+| --- | --- | --- | --- | --- |
+| [![render](/img/render.png)](https://render.com/) | Render | VM | $7/mo, shared CPU, 512 MB RAM | [read the docs](https://logchimp.codecarrot.net/docs/install/render) |
