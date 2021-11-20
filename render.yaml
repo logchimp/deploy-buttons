@@ -3,7 +3,8 @@ services:
   - type: web
     name: logchimp-api
     env: node
-    repo: https://github.com/logchimp/logchimp.git
+    repo: https://github.com/logchimp/logchimp
+    branch: v0.6.1
     numInstances: 1
     buildCommand: yarn install
     startCommand: yarn start
@@ -17,6 +18,9 @@ services:
     buildCommand: yarn build
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: false
+    envVars:
+      - key: NODE_VERSION
+        value: 12
     routes:
       - type: rewrite
         source: /*
@@ -24,4 +28,6 @@ services:
 
 databases:
   - name: logchimp-database
+    # only allow internal connections
     ipAllowList: []
+    postgresMajorVersion: 12
