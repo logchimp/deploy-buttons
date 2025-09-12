@@ -73,4 +73,4 @@ databases:
   - name: logchimp-database
     # only allow internal connections
     ipAllowList: []
-    postgresMajorVersion: "12"
+    postgresMajorVersion: "13"
