@@ -1,33 +1,76 @@
 services:
-  # Node web service
+  # LogChimp API
   - type: web
+    runtime: docker
     name: logchimp-api
-    env: node
-    repo: https://github.com/logchimp/logchimp
-    branch: v0.6.1
+    image:
+      url: ghcr.io/logchimp/logchimp/api:latest
     numInstances: 1
-    buildCommand: yarn install
-    startCommand: yarn start
     autoDeploy: false
-
-  # A static site
-  - type: web
-    name: logchimp-client
-    env: static
-    repo: https://github.com/logchimp/theme.git
-    buildCommand: yarn build
-    staticPublishPath: ./dist
-    pullRequestPreviewsEnabled: false
     envVars:
-      - key: NODE_VERSION
-        value: 12
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8000"
+      - key: LOGCHIMP_IS_SELF_HOSTED
+        value: "true"
+      - key: LOGCHIMP_SECRET_KEY
+        generateValue: true
+      - key: LOGCHIMP_MACHINE_SIGNATURE
+        generateValue: true
+      - key: LOGCHIMP_WEB_URL
+        sync: false
+      # Database
+      - key: LOGCHIMP_DB_HOST
+        fromDatabase:
+          name: logchimp-database
+          property: host
+      - key: LOGCHIMP_DB_DATABASE
+        fromDatabase:
+          name: logchimp-database
+          property: database
+      - key: LOGCHIMP_DB_PORT
+        fromDatabase:
+          name: logchimp-database
+          property: port
+      - key: LOGCHIMP_DB_USER
+        fromDatabase:
+          name: logchimp-database
+          property: user
+      - key: LOGCHIMP_DB_PASSWORD
+        fromDatabase:
+          name: logchimp-database
+          property: password
+      - key: LOGCHIMP_DB_SSL
+        value: "false"
+      # Mail
+      - key: LOGCHIMP_MAIL_HOST
+        sync: false
+      - key: LOGCHIMP_MAIL_USER
+        sync: false
+      - key: LOGCHIMP_MAIL_PASSWORD
+        sync: false
+      - key: LOGCHIMP_MAIL_PORT
+        sync: false
+
+  # LogChimp Theme
+  - type: web
+    runtime: docker
+    name: logchimp-theme
+    image: 
+      url: ghcr.io/logchimp/logchimp/theme:latest
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: VITE_API_URL
+        sync: false
+      - key: VITE_IS_SELF_HOSTED
+        value: "true"
 
 databases:
   - name: logchimp-database
     # only allow internal connections
     ipAllowList: []
-    postgresMajorVersion: 12
+    postgresMajorVersion: "12"
